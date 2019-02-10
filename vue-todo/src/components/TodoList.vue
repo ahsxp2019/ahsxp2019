@@ -1,7 +1,8 @@
 <template>
     <div>
-     <ul>
-         <li v-for="(todoItem, index) in todoItems" v-bind:key="todoItem.item" class="shadow">
+     <transition-group name="list" tag="ul">
+    
+         <li v-for="(todoItem, index) in this.todoItems" v-bind:key="todoItem.item" class="shadow">
              <i class="checkBtn fas fa-check" v-bind:class="{checBtnCompleted: todoItem.completed}" 
              v-on:click="toggleComplete(todoItem, index)"></i>
              <span v-bind:class="{textCompleted: todoItem.completed}">{{ todoItem.item }}</span>
@@ -9,46 +10,34 @@
              <i class="fas fa-trash-alt"></i>
              </span>
          </li>         
-     </ul>
+     </transition-group>
     </div>
 </template>
 
 <script>
-export default {
-    data: function(){
-        return{
-            todoItems: []
-        }
-    },
-    created: function(){
-        console.log('created');
-        if(localStorage.length > 0){
-            for(var i = 0 ; i < localStorage.length ; i++){
-                if(localStorage.key(i) !== 'loglevel:webpack-dev-server'){
-                                    
-                    this.todoItems.push(JSON.parse(localStorage.getItem(localStorage.key(i))));
-                }
-                
-            }
-        }
-    },
+import  { mapGetters } from 'vuex'
+
+export default {    
+ 
     methods:{
-        removeTodo: function(todoItem, index){
-            console.log("todoItem"+todoItem+"index"+index);
-            localStorage.removeItem(todoItem);
-            this.todoItems.splice(index,1);
-        },
-        toggleComplete: function(todoItem, index){
+        removeTodo(todoItem, index){
             
-            todoItem.completed = !todoItem.completed;
-            //localStorage.removeItem(todoItem.item);
-            localStorage.setItem(todoItem.item, JSON.stringify(todoItem));
+            this.$store.commit('removeOneItem', {todoItem, index});
+            
+        },
+        toggleComplete(todoItem, index){
+            
+            this.$store.commit('toggleOneCompleted', {todoItem, index});
+           
+        }, 
+        computed: {
+            todoItems: () => {
+                console.log('computed');
+                        
+                   return this.$store.getters.storedTodoItems
+               }
         }
-
     }
-
-
-
 }
 </script>
 
@@ -83,5 +72,14 @@ li {
 .removeBtn{
     margin-left: auto;
     color: #de4343;
+}
+/* */
+
+.list-enter-active, .list-leave-active {
+  transition: all 1s;
+}
+.list-enter, .list-leave-to /* .list-leave-active below version 2.1.8 */ {
+  opacity: 0;
+  transform: translateY(30px);
 }
 </style>

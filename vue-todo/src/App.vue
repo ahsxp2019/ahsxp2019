@@ -15,11 +15,49 @@ import TodoInput from './components/TodoInput.vue'
 
 
 export default {
+        data: function(){
+        return{
+            todoItems: []
+        }
+    },
+    methods:{
+     // addOneItem(todoItem){       
+      //    const obj = {completed: false, item: todoItem}          
+     //     localStorage.setItem(todoItem,JSON.stringify(obj));
+      //    this.todoItems.push(obj);
+
+      //    },
+    //   removeOneItem(todoItem, index){
+    //       localStorage.removeItem(todoItem.item);
+    //       this.todoItems.splice(index,1);
+    //       },
+    //   clearOneTodo(){
+    //       localStorage.clear();
+    //       this.todoItems = [];
+    //   },
+    //   toggleOneCompleted(todoItem, index){
+    //       //todoItem.completed = !todoItem.completed;
+    //       console.log("toggleOneCompleted");
+    //       this.todoItems[index].completed = ! this.todoItems[index].completed;
+    //       localStorage.removeItem(todoItem.item);
+    //       localStorage.setItem(todoItem.item, JSON.stringify(todoItem));
+     //}    
+
+
+
+
+},
+ 
   components:{
-  'TodoHeader': TodoHeader,
+ 
+    TodoHeader,
+    TodoInput,
+    TodoList,
+    TodoFooter
+ /* 'TodoHeader': TodoHeader,
   'TodoInput': TodoInput,
   'TodoList': TodoList,
-  'TodoFooter': TodoFooter  
+  'TodoFooter': TodoFooter  */
   }
 }
 </script>
